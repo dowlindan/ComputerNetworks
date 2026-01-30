@@ -384,7 +384,7 @@ void get_current_ntp_time(ntp_timestamp_t *ntp_ts){
 void ntp_time_to_string(const ntp_timestamp_t *ntp_ts, char *buffer, size_t buffer_size, int local) {
     time_t unix_seconds = (time_t) (ntp_ts->seconds - NTP_EPOCH_OFFSET);
     time_t microseconds = ((time_t) ntp_ts->fraction * USEC_INCREMENTS) / NTP_FRACTION_SCALE;
-    // TODO: Implement this function
+
     struct tm *time;
     if (local == 1) {
         time = localtime(&unix_seconds);
@@ -616,7 +616,6 @@ void ntp_to_host(ntp_packet_t* packet){
  */
 int build_ntp_request(ntp_packet_t* packet) {
     // TODO: Implement this function
-    // Hint: memset to zero, set bit fields with macro, set basic fields, set transmit time
     if (!packet) {
         return RC_BAD_PACKET;
     }
@@ -676,8 +675,6 @@ int build_ntp_request(ntp_packet_t* packet) {
  * RC_OK (0) on success, RC_BUFF_TOO_SMALL (-2) if buffer too small
  */
 int decode_reference_id(uint8_t stratum, uint32_t ref_id, char *buff, int buff_sz){
-    printf("decode_reference_id() - TO BE IMPLEMENTED\n");
-    // TODO: Implement this function
     if (ref_id == 0) {
         if (buff_sz < 5) {
             return RC_BUFF_TOO_SMALL;
@@ -705,9 +702,7 @@ int decode_reference_id(uint8_t stratum, uint32_t ref_id, char *buff, int buff_s
         }
         return RC_OK;
     }
-    // Hint: Check buffer sizes, handle ref_id==0, stratum>=2 (IP), stratum<2 (ASCII)
-    snprintf(buff, buff_sz, "TO BE IMPLEMENTED");
-    return RC_OK;
+    return -1;
 }
 
 //STUDENT TODO
@@ -781,9 +776,6 @@ int calculate_ntp_offset(const ntp_packet_t* request,
                         const ntp_packet_t* response,
                         const ntp_timestamp_t* recv_time, 
                         ntp_result_t* result) {
-    printf("calculate_ntp_offset() - TO BE IMPLEMENTED\n");
-    // TODO: Implement this function
-    // Hint: Extract T1-T4 timestamps, apply NTP formulas, calculate dispersion
     if (!request || !response || !result) {
         return -1;
     }
@@ -912,11 +904,22 @@ Your clock is running BEHIND by 81.06ms
 Your estimated time error will be +/- 34.92ms
  */
 void print_ntp_results(const ntp_result_t* result) {
-    /* Here are some local buffers that you should use*/
     char svr_time_buff[TIME_BUFF_SIZE];
     char cli_time_buff[TIME_BUFF_SIZE];
 
-    printf("print_ntp_results() - TO BE IMPLEMENTED\n");
-    //Hint:  Note that you really dont have to do much here other than
-    //       Print out data that is passed in teh result arguement
+    ntp_time_to_string(&(result->server_time), svr_time_buff, TIME_BUFF_SIZE, LOCAL_TIME);
+    ntp_time_to_string(&(result->client_time), cli_time_buff, TIME_BUFF_SIZE, LOCAL_TIME);
+    printf("Server Time: %s\n", svr_time_buff);
+    printf("Client Time: %s\n", cli_time_buff);
+    printf("Round Trip Delay: %lf\n", result->delay);
+
+    printf("\nTime Offset: %lf\n", result->offset);
+    printf("Final dispersion: %lf\n", result->final_dispersion);
+
+    double offset_ms = fabs(result->offset * 1000.0);
+    double dispersion_ms = result->final_dispersion * 1000.0;
+    char* ahead_or_behind = offset_ms >= 0 ? "AHEAD" : "BEHIND";
+
+    printf("Your clock is running %s by %.02lfms\n", ahead_or_behind, offset_ms);
+    printf("Your estimated time error will be +/- %.02lfms\n", dispersion_ms);
 }
