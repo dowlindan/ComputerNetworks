@@ -81,12 +81,14 @@ Answer these questions:
 1. **What happened?** (2-3 sentences)
    - Brief description of the incident
    - When it occurred and who was affected
+   I chose the 2012 leap second bug because it had the most coverage. This incident was a series of outages and system failures that occured during the previous leap second insertions, on June 30, 2012. Major websites and services were affected, around half the internet, was affected.
 
 2. **What went wrong with time specifically?**
    - Did clocks drift apart between servers?
    - Did time jump forward or backward?
    - Was it a leap second issue?
    - Did NTP fail or behave unexpectedly?
+   What went wrong specifically was a bug that was the root cause. There wa
 
 3. **What was the impact?**
    - How long was the outage/incident?
