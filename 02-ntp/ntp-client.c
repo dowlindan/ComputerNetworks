@@ -353,7 +353,6 @@ void get_current_ntp_time(ntp_timestamp_t *ntp_ts){
 
     ntp_ts->seconds = ntp_seconds;
     ntp_ts->fraction = ntp_fraction;
-    printf("ntp_fraction: %u\n", ntp_fraction);
 }
 
 //STUDENT TODO
@@ -916,10 +915,10 @@ void print_ntp_results(const ntp_result_t* result) {
     printf("\nTime Offset: %lf\n", result->offset);
     printf("Final dispersion: %lf\n", result->final_dispersion);
 
-    double offset_ms = fabs(result->offset * 1000.0);
+    double offset_ms = result->offset * 1000.0;
     double dispersion_ms = result->final_dispersion * 1000.0;
     char* ahead_or_behind = offset_ms >= 0 ? "AHEAD" : "BEHIND";
 
-    printf("Your clock is running %s by %.02lfms\n", ahead_or_behind, offset_ms);
+    printf("Your clock is running %s by %.02lfms\n", ahead_or_behind, fabs(offset_ms));
     printf("Your estimated time error will be +/- %.02lfms\n", dispersion_ms);
 }
