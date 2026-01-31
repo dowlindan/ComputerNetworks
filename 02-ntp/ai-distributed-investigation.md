@@ -81,14 +81,12 @@ Answer these questions:
 1. **What happened?** (2-3 sentences)
    - Brief description of the incident
    - When it occurred and who was affected
-   I chose the 2012 leap second bug because it had the most coverage. This incident was a series of outages and system failures that occured during the previous leap second insertions, on June 30, 2012. Major websites and services were affected, around half the internet, was affected.
 
 2. **What went wrong with time specifically?**
    - Did clocks drift apart between servers?
    - Did time jump forward or backward?
    - Was it a leap second issue?
    - Did NTP fail or behave unexpectedly?
-   What went wrong specifically was a bug that was the root cause. There wa
 
 3. **What was the impact?**
    - How long was the outage/incident?
@@ -217,11 +215,11 @@ Then answer:
    Run your NTP client 3 times and record the offset values:
    
    ```
-   Run 1: offset = ____ ms
-   Run 2: offset = ____ ms  
-   Run 3: offset = ____ ms
+   Run 1: offset = -61.22 ms
+   Run 2: offset = -216.05 ms  
+   Run 3: offset = -298.45 ms
    
-   Average offset: ____ ms
+   Average offset: -190.91 ms
    ```
    
    Typical NTP accuracy over the Internet: 10-100 milliseconds
@@ -230,6 +228,8 @@ Then answer:
    - Does your NTP client provide **strong consistency** (all clocks always exactly synchronized)?
    - Or does it provide **eventual consistency** (clocks converge over time)?
    - Explain your answer based on what you learned in Section 4
+
+   The client provides eventual consistency, which is clocks converging over time. Clock offsets are corrected gradually over time and different machines may observe different times at any instant, but given stable conditions, clocks converage within a bounded error which is never zero.
 
 ### Part B: Understanding the Big Picture (1 point)
 
